@@ -18,6 +18,7 @@ export default function Register() {
   const [Co, setCo] = useState('');
   const [Le, setLe] = useState('');
   const [Ce, setCe] = useState('');
+  const [resFreq, setResFreq] = useState('');
   const [comLo, comsetLo] = useState('');
   const [comCo, comsetCo] = useState('');
   const [comLe, comsetLe] = useState('');
@@ -39,12 +40,13 @@ export default function Register() {
     try {
       const response = await api.post("buck", data);
 
-      const { dutyCicle, comLo, comCo, comLe, comCe, Lo, Co, Le, Ce } = response.data;
+      const { dutyCicle, comLo, comCo, comLe, comCe, Lo, Co, Le, Ce, resFreq } = response.data;
       setDutyCicle(dutyCicle);
       setLo(Lo);
       setCo(Co);
       setLe(Le);
       setCe(Ce);
+      setResFreq(resFreq);
       comsetLo(comLo);
       comsetCo(comCo);
       comsetLe(comLe);
@@ -65,6 +67,9 @@ export default function Register() {
             <h1>Calculo de conversor Buck</h1>
             <p>Entre com os dados para calcular os valores:</p>
             <h2>DutyCicle: {DutyCicle}</h2>
+            <h2>Freq. de res.: {resFreq}Hz</h2>
+          </div>
+          <div>
             <b>Valores comerciais:</b>
             <h2>Le: {comLe}mH</h2>
             <h2>Ce: {comCe}uF</h2>

@@ -9,6 +9,7 @@ module.exports = {
     let Co = Vin / (31 * Lo * Freq * Freq * DeltaV * Vout)
     let Ce = Iout / (4 * Freq * DeltaV * Vin)
     let Le = Iout / (31 * Freq * Freq * Ce * DeltaI * Iin)
+    let resFreq = 1/(2*Math.PI*Math.sqrt(Ce*Le));
     let comLo = getComercialL(Lo, 1) * 1000;
     let comCo = getComercialL(Co, 1) * 1000000;
     let comLe = getComercialL(Le, 1) * 1000;
@@ -26,7 +27,8 @@ module.exports = {
     Co = Co.toFixed(2)
     Ce = Ce.toFixed(2)
     dutyCicle = dutyCicle.toFixed(4)
-    const values = { dutyCicle, Lo, Co, Le, Ce, comLo, comCo, comLe, comCe, }
+    resFreq=resFreq.toFixed(2)
+    const values = { dutyCicle, Lo, Co, Le, Ce, comLo, comCo, comLe, comCe, resFreq }
 
 
     return response.json(values);
