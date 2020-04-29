@@ -23,6 +23,8 @@ export default function Register() {
   const [comCo, comsetCo] = useState('');
   const [deltaIin, setDeltaIin] = useState('');
   const [comCe, comsetCe] = useState('');
+  const [type, setType] = useState('Buck ou Boost');
+  const [hid,setHid] = useState({})
 
 
   async function handleRegister(e) {
@@ -42,7 +44,7 @@ export default function Register() {
     try {
       const response = await api.post("buck", data);
 
-      const { dutyCicle, comCo, comCe, Lo, Co, Le, Ce, resFreq } = response.data;
+      const { dutyCicle, comCo, comCe, Lo, Co, Le, Ce, resFreq, type } = response.data;
       setDutyCicle(dutyCicle);
       setLo(Lo);
       setCo(Co);
@@ -51,6 +53,12 @@ export default function Register() {
       setResFreq(resFreq);
       comsetCo(comCo);
       comsetCe(comCe);
+      setType(type)
+      if(Le=="0"){
+        setHid({visibility:"hidden"})
+      }else{
+        setHid({visibility:"visible"})
+      }
 
     } catch (err) {
       alert("Erro no cadastro, tente novamente.")
@@ -64,22 +72,23 @@ export default function Register() {
       <div className="content">
         <section>
           <div>
-            <h1>Calculo de conversores Buck ou Boost</h1>
+            <h1>Calculo de conversor {type}</h1>
             <p>Entre com os dados para calcular os valores:</p>
+            {/* <h2>Tipo: {type}</h2> */}
             <h2>DutyCicle: {DutyCicle}</h2>
-            <h2>Freq. de res.: {resFreq}Hz</h2>
+            <h2 style={hid}>Freq. de res.: {resFreq}Hz</h2>
           </div>
           <div>
             <b>Valores comerciais:</b>
-            <h2>Ce: {comCe}uF</h2>
             <h2>Co: {comCo}uF</h2>
+            <h2 style={hid}>Ce: {comCe}uF</h2>
           </div>
           <div>
             <b>Valores reais:</b>
-            <h2>Le: {Le}mH</h2>
-            <h2>Ce: {Ce}uF</h2>
             <h2>Lo: {Lo}mH</h2>
             <h2>Co: {Co}uF</h2>
+            <h2 style={hid}>Le: {Le}mH</h2>
+            <h2 style={hid}>Ce: {Ce}uF</h2>
           </div>
           {/* <Link className="back-link" to="/">
             <FiArrowLeft size={16} color="#E02041" />

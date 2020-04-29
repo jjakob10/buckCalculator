@@ -3,14 +3,17 @@ const getComercialL = require('../util/getComercialL');
 module.exports = {
   async index(request, response) {
     const { Vin, Vout, Iout, Freq, DeltaV, DeltaI, DeltaVin, DeltaIin } = request.body;
-
     let dutyCicle = 0;
     let Lo = 0
     let Co = 0
-    let Ce = "Não Aplicável"
-    let Le = "Não Aplicável"
-    let resFreq = "Não Aplicável"
+    let Ce = 0
+    let Le = 0
+    let resFreq = 0
+    let comLe = 0
+    let comCe =0
+    let type
     if (Vin >= Vout) {
+      type = "Buck"
       dutyCicle = Vout / Vin;
       const Iin = (Vout * Iout) / Vin
       Lo = Vin / (4 * Freq * DeltaI * Iout)
@@ -18,30 +21,36 @@ module.exports = {
       Ce = Iout / (4 * Freq * DeltaVin * Vin)
       Le = Iout / (31 * Freq * Freq * Ce * DeltaIin * Iin)
       resFreq = 1 / (2 * Math.PI * Math.sqrt(Ce * Le));
+      comLe = getComercialL(Le, 1) * 1000;
+      comCe = getComercialL(Ce, 1) * 1000000;
+      Le = 1000 * Le;
+      Ce = 1000000 * Ce
+      Ce = Ce.toFixed(2)
+      Le = Le.toFixed(2)
+      comCe=comCe.toFixed(2)
+      comLe = comLe.toFixed(2);
+      resFreq = resFreq.toFixed(2)
     } else {
-      dutyCicle = 1 - (Vout / Vin);
+      type = "Boost"
+      dutyCicle = 1 - (Vin/ Vout);
       Lo = (Vin * dutyCicle) / (Freq * DeltaI * Iout)
       Co = Iout * (Vout - Vin) / (Vout * Freq * DeltaV * Vout)
+      console.log(dutyCicle,Lo,Co)
     }
     let comLo = getComercialL(Lo, 1) * 1000;
     let comCo = getComercialL(Co, 1) * 1000000;
-    let comLe = getComercialL(Le, 1) * 1000;
-    let comCe = getComercialL(Ce, 1) * 1000000;
     Lo = 1000 * Lo
-    Ce = 1000000 * Ce
     Co = 1000000 * Co;
-    Le = 1000 * Le;
+
     comLo = comLo.toFixed(2)
-    comLe = comLe.toFixed(2)
     comCo = comCo.toFixed(2)
-    comCe = comCe.toFixed(2)
-    Lo = Lo.toFixed(2)
-    Le = Le.toFixed(2)
+
     Co = Co.toFixed(2)
-    Ce = Ce.toFixed(2)
+    Lo = Lo.toFixed(2)
+
     dutyCicle = dutyCicle.toFixed(4)
-    resFreq = resFreq.toFixed(2)
-    const values = { dutyCicle, Lo, Co, Le, Ce, comLo, comCo, comLe, comCe, resFreq }
+    
+    const values = { dutyCicle, Lo, Co, Le, Ce, comLo, comCo, comLe, comCe, resFreq ,type}
 
 
     return response.json(values);
