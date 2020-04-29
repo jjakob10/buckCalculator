@@ -19,7 +19,7 @@ export default function Register() {
   const [Le, setLe] = useState('');
   const [Ce, setCe] = useState('');
   const [resFreq, setResFreq] = useState('');
-  const [deltaVin,setDeltaVin] = useState('');
+  const [deltaVin, setDeltaVin] = useState('');
   const [comCo, comsetCo] = useState('');
   const [deltaIin, setDeltaIin] = useState('');
   const [comCe, comsetCe] = useState('');
@@ -117,43 +117,46 @@ export default function Register() {
             value={Freq}
             onChange={e => setFreq(e.target.value)}
           />
-          <input
-            type="number"
-            step="any"
-            max="1"
-            min="0"
-            placeholder="Delta Vin (%)"
-            value={DeltaV}
-            onChange={e => setDeltaVin(e.target.value)}
-          />
-          <input
-            type="number"
-            step="any"
-            max="1"
-            min="0"
-            placeholder="Delta Iin (%)"
-            value={DeltaI}
-            onChange={e => setDeltaIin(e.target.value)}
-          />
-          <input
-            type="number"
-            step="any"
-            max="1"
-            min="0"
-            placeholder="Delta Vout (%)"
-            value={DeltaV}
-            onChange={e => setDeltaV(e.target.value)}
-          />
-          <input
-            type="number"
-            step="any"
-            max="1"
-            min="0"
-            placeholder="Delta Iout (%)"
-            value={DeltaI}
-            onChange={e => setDeltaI(e.target.value)}
-          />
-
+          <div className="input-group">
+            <input
+              type="number"
+              step="any"
+              max="1"
+              min="0"
+              placeholder="Delta Vin (%)"
+              value={deltaVin}
+              onChange={e => setDeltaVin(e.target.value)}
+            />
+            <input
+              type="number"
+              step="any"
+              max="1"
+              min="0"
+              placeholder="Delta Iin (%)"
+              value={deltaIin}
+              onChange={e => setDeltaIin(e.target.value)}
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type="number"
+              step="any"
+              max="1"
+              min="0"
+              placeholder="Delta Vout (%)"
+              value={DeltaV}
+              onChange={e => setDeltaV(e.target.value)}
+            />
+            <input
+              type="number"
+              step="any"
+              max="1"
+              min="0"
+              placeholder="Delta Iout (%)"
+              value={DeltaI}
+              onChange={e => setDeltaI(e.target.value)}
+            />
+          </div>
 
           <button className="button" type="submit">Calcular</button>
         </form>
