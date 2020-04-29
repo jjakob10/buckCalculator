@@ -19,9 +19,9 @@ export default function Register() {
   const [Le, setLe] = useState('');
   const [Ce, setCe] = useState('');
   const [resFreq, setResFreq] = useState('');
-  const [comLo, comsetLo] = useState('');
+  const [deltaVin,setDeltaVin] = useState('');
   const [comCo, comsetCo] = useState('');
-  const [comLe, comsetLe] = useState('');
+  const [deltaIin, setDeltaIin] = useState('');
   const [comCe, comsetCe] = useState('');
 
 
@@ -34,22 +34,22 @@ export default function Register() {
       Iout: Number(Iout),
       Freq: Number(Freq),
       DeltaV: Number(DeltaV),
-      DeltaI: Number(DeltaI)
+      DeltaI: Number(DeltaI),
+      DeltaIin: Number(deltaIin),
+      DeltaVin: Number(deltaVin)
     }
 
     try {
       const response = await api.post("buck", data);
 
-      const { dutyCicle, comLo, comCo, comLe, comCe, Lo, Co, Le, Ce, resFreq } = response.data;
+      const { dutyCicle, comCo, comCe, Lo, Co, Le, Ce, resFreq } = response.data;
       setDutyCicle(dutyCicle);
       setLo(Lo);
       setCo(Co);
       setLe(Le);
       setCe(Ce);
       setResFreq(resFreq);
-      comsetLo(comLo);
       comsetCo(comCo);
-      comsetLe(comLe);
       comsetCe(comCe);
 
     } catch (err) {
@@ -71,9 +71,7 @@ export default function Register() {
           </div>
           <div>
             <b>Valores comerciais:</b>
-            <h2>Le: {comLe}mH</h2>
             <h2>Ce: {comCe}uF</h2>
-            <h2>Lo: {comLo}mH</h2>
             <h2>Co: {comCo}uF</h2>
           </div>
           <div>
@@ -124,7 +122,25 @@ export default function Register() {
             step="any"
             max="1"
             min="0"
-            placeholder="Delta V (%)"
+            placeholder="Delta Vin (%)"
+            value={DeltaV}
+            onChange={e => setDeltaVin(e.target.value)}
+          />
+          <input
+            type="number"
+            step="any"
+            max="1"
+            min="0"
+            placeholder="Delta Iin (%)"
+            value={DeltaI}
+            onChange={e => setDeltaIin(e.target.value)}
+          />
+          <input
+            type="number"
+            step="any"
+            max="1"
+            min="0"
+            placeholder="Delta Vout (%)"
             value={DeltaV}
             onChange={e => setDeltaV(e.target.value)}
           />
@@ -133,7 +149,7 @@ export default function Register() {
             step="any"
             max="1"
             min="0"
-            placeholder="Delta I (%)"
+            placeholder="Delta Iout (%)"
             value={DeltaI}
             onChange={e => setDeltaI(e.target.value)}
           />
