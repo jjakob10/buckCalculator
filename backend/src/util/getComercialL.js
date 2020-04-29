@@ -13,6 +13,7 @@ function expoente(num) {
 }
 
 module.exports = function getComercialL(Lvalue,step) {
+  if(typeof Lvalue == 'string') return("Não Aplicável")
   let count = 0;
   const stepE =expoente(step);
   while (Lvalue < 1) {

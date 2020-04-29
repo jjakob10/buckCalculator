@@ -2,14 +2,27 @@ const getComercialL = require('../util/getComercialL');
 
 module.exports = {
   async index(request, response) {
-    const { Vin, Vout, Iout, Freq, DeltaV, DeltaI,DeltaVin, DeltaIin } = request.body;
-    let dutyCicle = Vout / Vin;
-    let Iin = (Vout * Iout) / Vin
-    let Lo = Vin / (4 * Freq * DeltaI * Iout)
-    let Co = Vin / (31 * Lo * Freq * Freq * DeltaV * Vout)
-    let Ce = Iout / (4 * Freq * DeltaVin * Vin)
-    let Le = Iout / (31 * Freq * Freq * Ce * DeltaIin * Iin)
-    let resFreq = 1/(2*Math.PI*Math.sqrt(Ce*Le));
+    const { Vin, Vout, Iout, Freq, DeltaV, DeltaI, DeltaVin, DeltaIin } = request.body;
+
+    let dutyCicle = 0;
+    let Lo = 0
+    let Co = 0
+    let Ce = "Não Aplicável"
+    let Le = "Não Aplicável"
+    let resFreq = "Não Aplicável"
+    if (Vin >= Vout) {
+      dutyCicle = Vout / Vin;
+      const Iin = (Vout * Iout) / Vin
+      Lo = Vin / (4 * Freq * DeltaI * Iout)
+      Co = Vin / (31 * Lo * Freq * Freq * DeltaV * Vout)
+      Ce = Iout / (4 * Freq * DeltaVin * Vin)
+      Le = Iout / (31 * Freq * Freq * Ce * DeltaIin * Iin)
+      resFreq = 1 / (2 * Math.PI * Math.sqrt(Ce * Le));
+    } else {
+      dutyCicle = 1 - (Vout / Vin);
+      Lo = (Vin * dutyCicle) / (Freq * DeltaI * Iout)
+      Co = Iout * (Vout - Vin) / (Vout * Freq * DeltaV * Vout)
+    }
     let comLo = getComercialL(Lo, 1) * 1000;
     let comCo = getComercialL(Co, 1) * 1000000;
     let comLe = getComercialL(Le, 1) * 1000;
@@ -27,7 +40,7 @@ module.exports = {
     Co = Co.toFixed(2)
     Ce = Ce.toFixed(2)
     dutyCicle = dutyCicle.toFixed(4)
-    resFreq=resFreq.toFixed(2)
+    resFreq = resFreq.toFixed(2)
     const values = { dutyCicle, Lo, Co, Le, Ce, comLo, comCo, comLe, comCe, resFreq }
 
 
