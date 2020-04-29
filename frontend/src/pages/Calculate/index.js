@@ -24,7 +24,7 @@ export default function Register() {
   const [deltaIin, setDeltaIin] = useState('');
   const [comCe, comsetCe] = useState('');
   const [type, setType] = useState('Buck ou Boost');
-  const [hid,setHid] = useState({})
+  const [hid, setHid] = useState({})
 
 
   async function handleRegister(e) {
@@ -42,26 +42,36 @@ export default function Register() {
     }
 
     try {
-      const response = await api.post("buck", data);
+      Object.keys(data).forEach((item) => {
+        if (data[item] === 0 || data[item] === null) {
+          throw ("Preencha corretamente todos os campos com números diferentes de '0'")
 
-      const { dutyCicle, comCo, comCe, Lo, Co, Le, Ce, resFreq, type } = response.data;
-      setDutyCicle(dutyCicle);
-      setLo(Lo);
-      setCo(Co);
-      setLe(Le);
-      setCe(Ce);
-      setResFreq(resFreq);
-      comsetCo(comCo);
-      comsetCe(comCe);
-      setType(type)
-      if(Le=="0"){
-        setHid({visibility:"hidden"})
-      }else{
-        setHid({visibility:"visible"})
+        }
+      })
+      try {
+        const response = await api.post("buck", data);
+
+        const { dutyCicle, comCo, comCe, Lo, Co, Le, Ce, resFreq, type } = response.data;
+        setDutyCicle(dutyCicle);
+        setLo(Lo);
+        setCo(Co);
+        setLe(Le);
+        setCe(Ce);
+        setResFreq(resFreq);
+        comsetCo(comCo);
+        comsetCe(comCe);
+        setType(type)
+        if (Le == "0") {
+          setHid({ visibility: "hidden" })
+        } else {
+          setHid({ visibility: "visible" })
+        }
+
+      } catch (err) {
+        alert("Erro na comunicação com o servidor")
       }
-
     } catch (err) {
-      alert("Erro no cadastro, tente novamente.")
+      alert(err)
     }
   };
 
@@ -73,7 +83,6 @@ export default function Register() {
         <section>
           <div>
             <h1>Calculo de conversor {type}</h1>
-            <p>Entre com os dados para calcular os valores:</p>
             {/* <h2>Tipo: {type}</h2> */}
             <h2>DutyCicle: {DutyCicle}</h2>
             <h2 style={hid}>Freq. de res.: {resFreq}Hz</h2>
@@ -97,6 +106,7 @@ export default function Register() {
         </section>
 
         <form onSubmit={handleRegister}>
+          <p>Entre com os dados para calcular os valores:</p>
           <input
             type="number"
             step="any"
