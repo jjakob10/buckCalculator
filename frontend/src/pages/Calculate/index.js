@@ -64,7 +64,7 @@ export default function Register() {
       <div className="content">
         <section>
           <div>
-            <h1>Calculo de conversor Buck</h1>
+            <h1>Calculo de conversores Buck ou Boost</h1>
             <p>Entre com os dados para calcular os valores:</p>
             <h2>DutyCicle: {DutyCicle}</h2>
             <h2>Freq. de res.: {resFreq}Hz</h2>
