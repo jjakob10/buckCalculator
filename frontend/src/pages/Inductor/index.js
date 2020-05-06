@@ -14,8 +14,12 @@ export default function Register() {
   const [ray2, setRay2] = useState("")
   const [u, setU] = useState("")
   const [med, setMed] = useState("")
-  const [type, setType] = useState("")
+  const [type, setType] = useState("toroid")
   const [N, setN] = useState("")
+  const [medText, setMedText] = useState("Area da seção trasnversal (cm²)")
+  
+  
+
 
 
 
@@ -23,14 +27,15 @@ export default function Register() {
     setType(e.target.value)
     if (e.target.value === "cilinder") {
       setHid({ visibility: "hidden" })
+      setMedText("Comprimento (cm)")
     } else {
       setHid({ visibility: "visible" })
+      setMedText("Area da seção trasnversal (cm²)")
     }
   }
 
   async function handleRegister(e) {
     e.preventDefault();
-
     const data = {
       type,
       L: Number(L),
@@ -39,14 +44,28 @@ export default function Register() {
       u: Number(u),
       med: Number(med),
     }
-
+    console.log(data)
     try {
-      const response = await api.post("inductor", data);
+      Object.keys(data).forEach((item) => {
+        if ((data[item] === 0 || data[item] === null) && item !== "ray2") {
+          throw ("Preencha corretamente todos os campos com números diferentes de '0'")
 
-      const { N } = response.data;
-      setN(N);
-    } catch (err) {
-      alert("Erro de comunicação")
+        }
+
+      })
+      try {
+
+        const response = await api.post("inductor", data);
+
+        const { N } = response.data
+        setN(N);
+      } catch (err) {
+        alert("Erro de comunicação")
+
+      }
+    }
+    catch (err) {
+      alert(err)
     }
   };
 
@@ -57,12 +76,12 @@ export default function Register() {
       <div className="content">
         <section>
           <div>
-            <h1>Calculo de conversor {type}</h1>
-            <p>Entre com os dados para calcular os valores:</p>
+            <h1>Calculo de numero de volta de indutor</h1>
+            <b>Entre com os dados para calcular</b>
 
           </div>
           <div>
-            <h2>N: {N}</h2>
+            <h2>Numero de voltas: {N}</h2>
           </div>
           <Link className="back-link" to="/">
             <FiArrowLeft size={16} color="#E02041" />
@@ -72,21 +91,44 @@ export default function Register() {
 
         <form onSubmit={handleRegister}>
           <label>
-            Escolha seu sabor favorito:
-            <select value={type} onChange={handleChange}>
-              <option value="toroid">Toroidal</option>
-              <option value="cilinder">Cilindrico</option>
-            </select>
+            Escolha o tipo de indutor:
+            <div class="custom-select" style={{ width: "200px" }}>
+              <select value={type} onChange={handleChange}>
+                <option value="toroid">Toroidal</option>
+                <option value="cilinder">Cilindrico</option>
+              </select>
+            </div>
           </label>
 
+          <input
+            type="number"
+            step="any"
+            placeholder="Indutancia (mH)"
+            value={L}
+            onChange={e => setL(e.target.value)}
+          />
+          <input
+            type="number"
+            step="any"
+            placeholder={medText}
+            value={med}
+            onChange={e => setMed(e.target.value)}
+          />
+          <input
+            type="number"
+            step="any"
+            placeholder="permeabilidade do material (Wb/m²)"
+            value={u}
+            onChange={e => setU(e.target.value)}
+          />
 
           <div className="input-group">
             <input
               type="number"
               step="any"
-              max="1"
+              
               min="0"
-              placeholder="Inner ray (CM)"
+              placeholder="Inner Radius(cm)"
               value={ray}
               onChange={e => setRay(e.target.value)}
             />
@@ -94,9 +136,9 @@ export default function Register() {
               type="number"
               style={hid}
               step="any"
-              max="1"
+              
               min="0"
-              placeholder="External ray (CM)"
+              placeholder="Extern Radius(cm)"
               value={ray2}
               onChange={e => setRay2(e.target.value)}
             />

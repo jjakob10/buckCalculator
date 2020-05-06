@@ -12,7 +12,7 @@ module.exports = {
     else if(type==="toroid"){
       N= Math.sqrt((L*500000)/(med*Math.log(ray2/ray)*u))
     }
-
+   N= N.toFixed(0)
     const values = {N }
 
 

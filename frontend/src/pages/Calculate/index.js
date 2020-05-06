@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-// import { Link } from "react-router-dom"
-// import { FiArrowLeft } from "react-icons/fi"
+import { Link } from "react-router-dom"
+import { FiArrowRight } from "react-icons/fi"
 
 import api from "../../services/api"
 import "./styles.css"
@@ -99,10 +99,11 @@ export default function Register() {
             <h2 style={hid}>Le: {Le}mH</h2>
             <h2 style={hid}>Ce: {Ce}uF</h2>
           </div>
-          {/* <Link className="back-link" to="/">
-            <FiArrowLeft size={16} color="#E02041" />
-            Voltar para página principal
-          </Link> */}
+          <Link className="back-link" to={{pathname:"/inductor",state:{Lo,Le}}}>
+
+            Ir para o calculo do indutor
+            <FiArrowRight size={16} color="#E02041" />
+          </Link>
         </section>
 
         <form onSubmit={handleRegister}>
