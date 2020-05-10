@@ -16,7 +16,7 @@ export default function Register() {
   const [med, setMed] = useState("")
   const [type, setType] = useState("toroid")
   const [N, setN] = useState("")
-  const [medText, setMedText] = useState("Area da seção trasnversal (cm²)")
+  const [medText, setMedText] = useState("Espessura (cm)")
   
   
 
@@ -30,7 +30,7 @@ export default function Register() {
       setMedText("Comprimento (cm)")
     } else {
       setHid({ visibility: "visible" })
-      setMedText("Area da seção trasnversal (cm²)")
+      setMedText("Espessura (cm)")
     }
   }
 
@@ -117,7 +117,7 @@ export default function Register() {
           <input
             type="number"
             step="any"
-            placeholder="permeabilidade do material (Wb/m²)"
+            placeholder="permeabilidade relativa (H/m)"
             value={u}
             onChange={e => setU(e.target.value)}
           />
