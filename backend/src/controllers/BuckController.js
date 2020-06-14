@@ -2,7 +2,11 @@ const getComercialL = require('../util/getComercialL');
 
 module.exports = {
   async index(request, response) {
-    const { Vin, Vout, Iout, Freq, DeltaV, DeltaI, DeltaVin, DeltaIin } = request.body;
+    const { Vin, Vout, Iout, Freq, _DeltaV, _DeltaI, _DeltaVin, _DeltaIin } = request.body;
+    const DeltaV = _DeltaV/100
+    const DeltaI = _DeltaI/100
+    const DeltaVin = _DeltaVin/100
+    const DeltaIin = _DeltaIin/100
     let dutyCicle = 0;
     let Lo = 0
     let Co = 0
