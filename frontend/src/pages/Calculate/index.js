@@ -35,10 +35,10 @@ export default function Register() {
       Vout: Number(Vout),
       Iout: Number(Iout),
       Freq: Number(Freq),
-      DeltaV: Number(DeltaV),
-      DeltaI: Number(DeltaI),
-      DeltaIin: Number(deltaIin),
-      DeltaVin: Number(deltaVin)
+      _DeltaV: Number(DeltaV),
+      _DeltaI: Number(DeltaI),
+      _DeltaIin: Number(deltaIin),
+      _DeltaVin: Number(deltaVin)
     }
 
     try {
@@ -141,7 +141,7 @@ export default function Register() {
             <input
               type="number"
               step="any"
-              max="1"
+              max="100"
               min="0"
               placeholder="Delta Vin (%)"
               value={deltaVin}
@@ -150,7 +150,7 @@ export default function Register() {
             <input
               type="number"
               step="any"
-              max="1"
+              max="100"
               min="0"
               placeholder="Delta Iin (%)"
               value={deltaIin}
@@ -161,7 +161,7 @@ export default function Register() {
             <input
               type="number"
               step="any"
-              max="1"
+              max="100"
               min="0"
               placeholder="Delta Vout (%)"
               value={DeltaV}
@@ -170,7 +170,7 @@ export default function Register() {
             <input
               type="number"
               step="any"
-              max="1"
+              max="100"
               min="0"
               placeholder="Delta Iout (%)"
               value={DeltaI}
